@@ -1,5 +1,8 @@
 # Workflow
 name: CI/CD - Vercel Deploy
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # Vercel 조직 ID
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }} # Vercel 프로젝트 ID
 
 on:
   push:
@@ -31,10 +34,14 @@ jobs:
       - name: Build
         run: npm run build # 빌드 (CRA 기본 설정)
 
-      - name: Deploy to Vercel
-        uses: BetaHuhn/deploy-to-vercel-action@latest # Vercel 배포 액션
-        with:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Vercel 토큰
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # Vercel 조직 ID
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }} # Vercel 프로젝트 ID
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub Token 추가
+      - name: Install Vercel CLI
+        run: npm install --global vercel@canary
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
