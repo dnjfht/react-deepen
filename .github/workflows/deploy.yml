@@ -1,0 +1,39 @@
+# Workflow
+name: CI/CD - Vercel Deploy
+
+on:
+  push:
+    branches: [main] # 배포를 트리거할 브랜치
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Workflow는 여러 개의 job으로 이뤄질 수 있고
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 실행 환경 (Ubuntu 최신 버전)
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    # 하나의 Job은 여러 개의 Step으로 이뤄져 있다.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # 코드 체크아웃
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16 # Node.js 버전
+
+      - name: Install dependencies
+        run: npm install # 또는 yarn install
+
+      - name: Run tests
+        run: npm test # 테스트 실행 (CRA 기본 설정)
+
+      - name: Build
+        run: npm run build # 빌드 (CRA 기본 설정)
+
+      - name: Deploy to Vercel
+        uses: BetaHuhn/deploy-to-vercel-action@latest # Vercel 배포 액션
+        with:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Vercel 토큰
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # Vercel 조직 ID
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }} # Vercel 프로젝트 ID
