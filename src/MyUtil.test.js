@@ -13,7 +13,7 @@ describe("getTriangleArea", () => {
     expect(getTriangleArea(50, 3)).not.toBe(70);
   });
 
-  test("가로가 200이고 세로가 400이면 삼각형의 넓이는 20000이다", () => {
-    expect(getTriangleArea(200, 400)).toBe(20000);
+  test("가로가 200이고 세로가 400이면 삼각형의 넓이는 40000이다", () => {
+    expect(getTriangleArea(200, 400)).toBe(40000);
   });
 });
