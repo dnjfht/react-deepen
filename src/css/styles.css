@@ -1,0 +1,20 @@
+.box {
+  display: block;
+  width: 200px;
+  height: 200px;
+  overflow: auto;
+  margin: 50px;
+  padding: 10px;
+}
+
+.light {
+  background-color: skyblue;
+  border: 5px solid blue;
+  color: black;
+}
+
+.dark {
+  background-color: black;
+  border: 5px solid gray;
+  color: white;
+}

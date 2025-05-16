@@ -1,17 +1,33 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+
+// import App from "./App";
+import ForList from "./components/ForList";
+import books from "./books";
+import SelectStyles from "./components/SelectStyles";
+import ListTemplate from "./components/ListTemplate";
+import MyHello from "./components/MyHello";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <ForList src={books} />
+    <SelectStyles mode="dark" />
+    <ListTemplate src={books}>
+      {(elem) => (
+        <>
+          <dt>
+            <a href={`https://wikibook.co.kr/images/cover/s/${elem.isbn}.jpg`}>
+              {elem.title} ({elem.price}원)
+            </a>
+          </dt>
+        </>
+      )}
+    </ListTemplate>
+    <MyHello myName={0} />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
